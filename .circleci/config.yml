@@ -1,0 +1,52 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: cimg/base:current
+    working_directory: ~/app
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+      - run:
+          name: Check docker version
+          command: docker --version
+      - run:
+          name: Build udagram-api-feed image
+          command: |
+            echo "Begin build udagram-api-feed image"
+            docker build -t "$DOCKER_USERNAME"/udagram-api-feed .
+            docker tag "$DOCKER_USERNAME"/udagram-api-feed "$DOCKER_USERNAME"/udagram-api-feed:v1
+            echo "Complete build udagram-api-feed image"
+      - run:
+          name: Build udagram-api-user image
+          command: |
+            echo "Begin build udagram-api-user image"
+            docker build -t "$DOCKER_USERNAME"/udagram-api-user .
+            docker tag "$DOCKER_USERNAME"/udagram-api-user "$DOCKER_USERNAME"/udagram-api-user:v1
+            echo "Complete build udagram-api-user image"
+        - run:
+          name: Build and push udagram-reverseproxy image
+          command: |
+            echo "Begin build udagram-reverseproxy image"
+            docker build -t "$DOCKER_USERNAME"/udagram-reverseproxy .
+            docker tag "$DOCKER_USERNAME"/udagram-reverseproxy "$DOCKER_USERNAME"/udagram-reverseproxy:v1
+            echo "Complete build udagram-reverseproxy image"
+        - run:
+          name: Build and push udagram-frontend image
+          command: |
+            echo "Begin build udagram-frontend image"
+            docker build -t "$DOCKER_USERNAME"/udagram-frontend .
+            docker tag "$DOCKER_USERNAME"/udagram-frontend "$DOCKER_USERNAME"/udagram-frontend:v1
+            echo "Complete build udagram-frontend image"
+        - run:
+          name: Push all docker images to hub
+          command: |
+            echo "Begin push docker images to hub"
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker push "$DOCKER_USERNAME"/udagram-api-feed:v1
+            docker push "$DOCKER_USERNAME"/udagram-api-user:v1
+            docker push "$DOCKER_USERNAME"/udagram-reverseproxy:v1
+            docker push "$DOCKER_USERNAME"/udagram-frontend:v1
+            echo "Competed push docker images to hub"
