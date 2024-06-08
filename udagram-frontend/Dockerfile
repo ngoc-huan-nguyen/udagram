@@ -11,7 +11,7 @@ ARG OPTS=--openssl-legacy-provider
 ENV NODE_OPTIONS=$OPTS
 
 CMD echo "NODE_OPTS: ${NODE_OPTIONS}"
-RUN npm ci -f
+RUN npm i -f
 ## Bundle app source
 COPY . .
  
