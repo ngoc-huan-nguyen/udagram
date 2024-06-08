@@ -26,21 +26,21 @@ jobs:
             docker build -t "$DOCKER_USERNAME"/udagram-api-user .
             docker tag "$DOCKER_USERNAME"/udagram-api-user "$DOCKER_USERNAME"/udagram-api-user:v1
             echo "Complete build udagram-api-user image"
-        - run:
+      - run:
           name: Build and push udagram-reverseproxy image
           command: |
             echo "Begin build udagram-reverseproxy image"
             docker build -t "$DOCKER_USERNAME"/udagram-reverseproxy .
             docker tag "$DOCKER_USERNAME"/udagram-reverseproxy "$DOCKER_USERNAME"/udagram-reverseproxy:v1
             echo "Complete build udagram-reverseproxy image"
-        - run:
+      - run:
           name: Build and push udagram-frontend image
           command: |
             echo "Begin build udagram-frontend image"
             docker build -t "$DOCKER_USERNAME"/udagram-frontend .
             docker tag "$DOCKER_USERNAME"/udagram-frontend "$DOCKER_USERNAME"/udagram-frontend:v1
             echo "Complete build udagram-frontend image"
-        - run:
+      - run:
           name: Push all docker images to hub
           command: |
             echo "Begin push docker images to hub"
