@@ -95,8 +95,8 @@ jobs:
 workflows:
   version: 2
   build_and_push:
-    jobs: |
-      build-udagram-feed
-      build-udagram-user
-      build-udagram-reverseproxy
-      build-ugagram-frontend
+    jobs:
+      - build-udagram-feed
+      - build-udagram-user
+      - build-udagram-reverseproxy
+      - build-ugagram-frontend
