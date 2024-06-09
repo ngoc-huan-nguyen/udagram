@@ -1,16 +1,19 @@
 version: 2.1
 
-jobs:
-  build:
+executors:
+  node-executor:
     docker:
       - image: circleci/node:13.8.0
+  docker-executor:
+    docker:
+      - image: circleci/python:3.7
+jobs:
+  build-udargam-feed:
+    executor: node-executor
     steps:
       - checkout
       - setup_remote_docker:
           version: 20.10.14
-      - run:
-          name: Check docker version
-          command: docker --version
       - run:
           name: Build udagram-api-feed image
           command: |
@@ -19,6 +22,20 @@ jobs:
             docker tag "$DOCKER_USERNAME"/udagram-api-feed "$DOCKER_USERNAME"/udagram-api-feed:v1
             echo "Complete build udagram-api-feed image"
       - run:
+          name: Push image to dockerhub
+          command: |
+            echo "Begin push docker image to hub"
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker push "$DOCKER_USERNAME"/udagram-api-feed:v1
+            echo "Competed push docker image to hub"
+
+  build-udargam-user:
+    executor: node-executor
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+      - run:
           name: Build udagram-api-user image
           command: |
             echo "Begin build udagram-api-user image"
@@ -26,26 +43,60 @@ jobs:
             docker tag "$DOCKER_USERNAME"/udagram-api-user "$DOCKER_USERNAME"/udagram-api-user:v1
             echo "Complete build udagram-api-user image"
       - run:
-          name: Build and push udagram-reverseproxy image
+          name: Push image to dockerhub
+          command: |
+            echo "Begin push docker image to hub"
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker push "$DOCKER_USERNAME"/udagram-api-user:v1
+            echo "Competed push docker image to hub"
+
+  build-udargam-reverseproxy:
+    executor: docker-executor
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+      - run:
+          name: Build udagram-reverseproxy image
           command: |
             echo "Begin build udagram-reverseproxy image"
             docker build -t "$DOCKER_USERNAME"/udagram-reverseproxy ./udagram-reverseproxy/Dockerfile .
             docker tag "$DOCKER_USERNAME"/udagram-reverseproxy "$DOCKER_USERNAME"/udagram-reverseproxy:v1
             echo "Complete build udagram-reverseproxy image"
       - run:
-          name: Build and push udagram-frontend image
+          name: Push image to dockerhub
+          command: |
+            echo "Begin push docker image to hub"
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker push "$DOCKER_USERNAME"/udagram-reverseproxy:v1
+            echo "Competed push docker image to hub"
+
+  build-udargam-frontend:
+    executor: node-executor
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+      - run:
+          name: Build udagram-frontend image
           command: |
             echo "Begin build udagram-frontend image"
             docker build -t "$DOCKER_USERNAME"/udagram-frontend ./udagram-frontend/Dockerfile .
             docker tag "$DOCKER_USERNAME"/udagram-frontend "$DOCKER_USERNAME"/udagram-frontend:v1
             echo "Complete build udagram-frontend image"
       - run:
-          name: Push all docker images to hub
+          name: Push image to dockerhub
           command: |
-            echo "Begin push docker images to hub"
+            echo "Begin push docker image to hub"
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-            docker push "$DOCKER_USERNAME"/udagram-api-feed:v1
-            docker push "$DOCKER_USERNAME"/udagram-api-user:v1
-            docker push "$DOCKER_USERNAME"/udagram-reverseproxy:v1
             docker push "$DOCKER_USERNAME"/udagram-frontend:v1
-            echo "Competed push docker images to hub"
+            echo "Competed push docker image to hub"
+
+workflows:
+  version: 2
+  build_and_push:
+    jobs: |
+      build-udagram-feed
+      build-udagram-user
+      build-udagram-reverseproxy
+      build-ugagram-frontend
