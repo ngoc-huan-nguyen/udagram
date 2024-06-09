@@ -11,8 +11,7 @@ ARG OPTS=--openssl-legacy-provider
 ENV NODE_OPTIONS=$OPTS
 
 CMD echo "NODE_OPTS: ${NODE_OPTIONS}"
-RUN npm cache clean --force
-RUN npm cache verify
+
 RUN npm install --force
 ## Bundle app source
 COPY . .
