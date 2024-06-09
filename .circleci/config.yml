@@ -18,7 +18,8 @@ jobs:
           name: Build udagram-api-feed image
           command: |
             echo "Begin build udagram-api-feed image"
-            docker build -t "$DOCKER_USERNAME"/udagram-api-feed -f ./udagram-api-feed/Dockerfile .
+            cd udagram-api-feed
+            docker build -t "$DOCKER_USERNAME"/udagram-api-feed .
             docker tag "$DOCKER_USERNAME"/udagram-api-feed "$DOCKER_USERNAME"/udagram-api-feed:v1
             echo "Complete build udagram-api-feed image"
       - run:
@@ -39,7 +40,8 @@ jobs:
           name: Build udagram-api-user image
           command: |
             echo "Begin build udagram-api-user image"
-            docker build -t "$DOCKER_USERNAME"/udagram-api-user -f ./udagram-api-user/Dockerfile .
+            cd udagram-api-user
+            docker build -t "$DOCKER_USERNAME"/udagram-api-user .
             docker tag "$DOCKER_USERNAME"/udagram-api-user "$DOCKER_USERNAME"/udagram-api-user:v1
             echo "Complete build udagram-api-user image"
       - run:
@@ -60,7 +62,8 @@ jobs:
           name: Build udagram-reverseproxy image
           command: |
             echo "Begin build udagram-reverseproxy image"
-            docker build -t "$DOCKER_USERNAME"/udagram-reverseproxy -f ./udagram-reverseproxy/Dockerfile .
+            cd udagram-reverseproxy
+            docker build -t "$DOCKER_USERNAME"/udagram-reverseproxy .
             docker tag "$DOCKER_USERNAME"/udagram-reverseproxy "$DOCKER_USERNAME"/udagram-reverseproxy:v1
             echo "Complete build udagram-reverseproxy image"
       - run:
@@ -81,7 +84,8 @@ jobs:
           name: Build udagram-frontend image
           command: |
             echo "Begin build udagram-frontend image"
-            docker build -t "$DOCKER_USERNAME"/udagram-frontend -f ./udagram-frontend/Dockerfile .
+            cd udagram-frontend
+            docker build -t "$DOCKER_USERNAME"/udagram-frontend .
             docker tag "$DOCKER_USERNAME"/udagram-frontend "$DOCKER_USERNAME"/udagram-frontend:v1
             echo "Complete build udagram-frontend image"
       - run:
