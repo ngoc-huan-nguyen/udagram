@@ -8,7 +8,7 @@ executors:
     docker:
       - image: circleci/python:3.7
 jobs:
-  build-udargam-feed:
+  build-udagram-feed:
     executor: node-executor
     steps:
       - checkout
@@ -29,7 +29,7 @@ jobs:
             docker push "$DOCKER_USERNAME"/udagram-api-feed:v1
             echo "Competed push docker image to hub"
 
-  build-udargam-user:
+  build-udagram-user:
     executor: node-executor
     steps:
       - checkout
@@ -71,7 +71,7 @@ jobs:
             docker push "$DOCKER_USERNAME"/udagram-reverseproxy:v1
             echo "Competed push docker image to hub"
 
-  build-udargam-frontend:
+  build-udagram-frontend:
     executor: node-executor
     steps:
       - checkout
