@@ -15,7 +15,7 @@ spec:
         service: backend-feed
     spec:
       containers:
-      - name: udagram-api-feed
+      - name: backend-feed
         image: huannguyenngoc/udagram-api-feed:v2
         imagePullPolicy: Always
         resources:
@@ -23,8 +23,6 @@ spec:
             cpu: "250m"
           limits:
             cpu: "500m"
-        ports:
-        - containerPort: 80
         env:
         - name: URL
           valueFrom:

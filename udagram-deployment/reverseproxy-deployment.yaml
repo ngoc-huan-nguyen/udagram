@@ -15,12 +15,10 @@ spec:
         service: reverseproxy
     spec:
       containers:
-      - name: udagram-reverseproxy
+      - name: everseproxy
         image: huannguyenngoc/udagram-reverseproxy:v1
         resources:
           requests:
             cpu: "250m"
           limits:
             cpu: "500m"
-        ports:
-        - containerPort: 80

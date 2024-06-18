@@ -15,13 +15,11 @@ spec:
         service: frontend
     spec:
       containers:
-      - name: udagram-frontend
+      - name: frontend
         image: huannguyenngoc/udagram-frontend:v1
         resources:
           requests:
             cpu: "250m"
           limits:
             cpu: "500m"
-        ports:
-        - containerPort: 80
       restartPolicy: Always
