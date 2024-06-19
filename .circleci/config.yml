@@ -19,8 +19,8 @@ jobs:
           command: |
             echo "Begin build udagram-api-feed image"
             cd udagram-api-feed
-            docker build -t "$DOCKER_USERNAME"/udagram-api-feed .
-            docker tag "$DOCKER_USERNAME"/udagram-api-feed "$DOCKER_USERNAME"/udagram-api-feed:v1
+            docker build -t "$DOCKER_USERNAME"/udagram-api-feed --platform linux/arm64 .
+            docker tag "$DOCKER_USERNAME"/udagram-api-feed "$DOCKER_USERNAME"/udagram-api-feed:v4
             echo "Complete build udagram-api-feed image"
       - run:
           name: Push image to dockerhub
@@ -41,8 +41,8 @@ jobs:
           command: |
             echo "Begin build udagram-api-user image"
             cd udagram-api-user
-            docker build -t "$DOCKER_USERNAME"/udagram-api-user .
-            docker tag "$DOCKER_USERNAME"/udagram-api-user "$DOCKER_USERNAME"/udagram-api-user:v1
+            docker build -t "$DOCKER_USERNAME"/udagram-api-user --platform linux/arm64 .
+            docker tag "$DOCKER_USERNAME"/udagram-api-user "$DOCKER_USERNAME"/udagram-api-user:v4
             echo "Complete build udagram-api-user image"
       - run:
           name: Push image to dockerhub
@@ -63,7 +63,7 @@ jobs:
           command: |
             echo "Begin build udagram-reverseproxy image"
             cd udagram-reverseproxy
-            docker build -t "$DOCKER_USERNAME"/udagram-reverseproxy .
+            docker build -t "$DOCKER_USERNAME"/udagram-reverseproxy --platform linux/arm64 .
             docker tag "$DOCKER_USERNAME"/udagram-reverseproxy "$DOCKER_USERNAME"/udagram-reverseproxy:v1
             echo "Complete build udagram-reverseproxy image"
       - run:
@@ -85,7 +85,7 @@ jobs:
           command: |
             echo "Begin build udagram-frontend image"
             cd udagram-frontend
-            docker build -t "$DOCKER_USERNAME"/udagram-frontend .
+            docker build -t "$DOCKER_USERNAME"/udagram-frontend --platform linux/arm64 .
             docker tag "$DOCKER_USERNAME"/udagram-frontend "$DOCKER_USERNAME"/udagram-frontend:v1
             echo "Complete build udagram-frontend image"
       - run:
