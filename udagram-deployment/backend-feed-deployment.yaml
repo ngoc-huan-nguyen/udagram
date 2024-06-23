@@ -16,13 +16,15 @@ spec:
     spec:
       containers:
       - name: backend-feed
-        image: huannguyenngoc/udagram-api-feed:v2
+        image: huannguyenngoc/udagram-api-feed:v1
         imagePullPolicy: Always
         resources:
           requests:
             cpu: "250m"
           limits:
             cpu: "500m"
+        ports:
+        - containerPort: 80
         env:
         - name: URL
           valueFrom:
@@ -44,6 +46,11 @@ spec:
             configMapKeyRef:
               name: my-configmap
               key: AWS_REGION
+        - name: JWT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: my-configmap
+              key: JWT_SECRET
         - name: POSTGRES_DB
           valueFrom:
             configMapKeyRef:
@@ -54,11 +61,6 @@ spec:
             configMapKeyRef:
               name: my-configmap
               key: POSTGRES_HOST
-        - name: JWT_SECRET
-          valueFrom:
-            configMapKeyRef:
-              name: my-configmap
-              key: JWT_SECRET
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
